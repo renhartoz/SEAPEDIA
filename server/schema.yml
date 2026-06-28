@@ -1,0 +1,2449 @@
+openapi: 3.0.3
+info:
+  title: SEAPEDIA API
+  version: 1.0.0
+  description: Multi-role marketplace API
+paths:
+  /api/v1/admin/jobs/:
+    get:
+      operationId: v1_admin_jobs_retrieve
+      description: 'Admin: list all delivery jobs.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryJob'
+          description: ''
+  /api/v1/admin/orders/:
+    get:
+      operationId: v1_admin_orders_retrieve
+      description: 'Admin: list all orders.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/admin/overdue/:
+    get:
+      operationId: v1_admin_overdue_retrieve
+      description: 'Admin: list orders that have breached their SLA.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/admin/products/:
+    get:
+      operationId: v1_admin_products_retrieve
+      description: 'Admin: list all products.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPublic'
+          description: ''
+  /api/v1/admin/promos/:
+    get:
+      operationId: admin_promos_list
+      description: 'Admin: list all promos and create new ones.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promo'
+          description: ''
+    post:
+      operationId: v1_admin_promos_create
+      description: 'Admin: list all promos and create new ones.'
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromoCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PromoCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PromoCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+  /api/v1/admin/promos/{id}/:
+    get:
+      operationId: admin_promos_retrieve
+      description: 'Admin: retrieve a single promo.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+  /api/v1/admin/simulate-next-day/:
+    post:
+      operationId: v1_admin_simulate_next_day_create
+      description: 'Admin: trigger overdue order processing (simulates day advancement).'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSimulateNextDayResponse'
+          description: ''
+  /api/v1/admin/stats/:
+    get:
+      operationId: v1_admin_stats_retrieve
+      description: High-level platform statistics.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminStats'
+          description: ''
+  /api/v1/admin/stores/:
+    get:
+      operationId: v1_admin_stores_retrieve
+      description: 'Admin: list all stores.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePublic'
+          description: ''
+  /api/v1/admin/users/:
+    get:
+      operationId: v1_admin_users_retrieve
+      description: 'Admin: list all users with their roles.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /api/v1/admin/vouchers/:
+    get:
+      operationId: admin_vouchers_list
+      description: 'Admin: list all vouchers and create new ones.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Voucher'
+          description: ''
+    post:
+      operationId: v1_admin_vouchers_create
+      description: 'Admin: list all vouchers and create new ones.'
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoucherCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VoucherCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VoucherCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Voucher'
+          description: ''
+  /api/v1/admin/vouchers/{id}/:
+    get:
+      operationId: admin_vouchers_retrieve
+      description: 'Admin: retrieve a single voucher.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Voucher'
+          description: ''
+  /api/v1/auth/addresses/:
+    get:
+      operationId: v1_auth_addresses_list
+      description: List or create delivery addresses for the active buyer.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeliveryAddress'
+          description: ''
+    post:
+      operationId: v1_auth_addresses_create
+      description: List or create delivery addresses for the active buyer.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeliveryAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeliveryAddress'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryAddress'
+          description: ''
+  /api/v1/auth/addresses/{id}/:
+    get:
+      operationId: v1_auth_addresses_retrieve
+      description: Retrieve, update, or delete a specific delivery address.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryAddress'
+          description: ''
+    patch:
+      operationId: v1_auth_addresses_partial_update
+      description: Retrieve, update, or delete a specific delivery address.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDeliveryAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDeliveryAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDeliveryAddress'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryAddress'
+          description: ''
+    delete:
+      operationId: v1_auth_addresses_destroy
+      description: Retrieve, update, or delete a specific delivery address.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/login/:
+    post:
+      operationId: v1_auth_login_create
+      description: Obtain JWT token pair
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomTokenObtainPair'
+          description: ''
+  /api/v1/auth/logout/:
+    post:
+      operationId: v1_auth_logout_create
+      description: Blacklist the refresh token
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Logout'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/me/:
+    get:
+      operationId: v1_auth_me_retrieve
+      description: Current authenticated user profile
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /api/v1/auth/register/:
+    post:
+      operationId: v1_auth_register_create
+      description: Register a new user
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /api/v1/auth/role-switch/:
+    post:
+      operationId: v1_auth_role_switch_create
+      description: Issue a new token pair with a different active_role
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleSwitch'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RoleSwitch'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RoleSwitch'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleSwitchResponse'
+          description: ''
+  /api/v1/auth/token/refresh/:
+    post:
+      operationId: v1_auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/buyer/reports/:
+    get:
+      operationId: v1_buyer_reports_retrieve
+      description: Buyer spending summary.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerSpendingReport'
+          description: ''
+  /api/v1/cart/:
+    get:
+      operationId: v1_cart_retrieve
+      description: Get the buyer's cart summary.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+    delete:
+      operationId: v1_cart_destroy
+      description: Get the buyer's cart summary.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/cart/items/:
+    post:
+      operationId: v1_cart_items_create
+      description: Add a product to cart, enforcing single-store rule.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddToCart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AddToCart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AddToCart'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+  /api/v1/cart/items/{id}/:
+    patch:
+      operationId: v1_cart_items_partial_update
+      description: Update quantity or remove a cart item.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateCartItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateCartItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateCartItem'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+    delete:
+      operationId: v1_cart_items_destroy
+      description: Update quantity or remove a cart item.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/checkout/:
+    post:
+      operationId: v1_checkout_create
+      description: 'Create an order: atomically debit wallet, reduce stock, apply
+        discount.'
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/checkout/preview/:
+    post:
+      operationId: v1_checkout_preview_create
+      description: Return a price breakdown without committing any changes.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutPreview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CheckoutPreview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CheckoutPreview'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutPreviewResponse'
+          description: ''
+  /api/v1/discounts/promos/:
+    get:
+      operationId: v1_discounts_promos_list
+      description: List all currently valid promos for buyers.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promo'
+          description: ''
+  /api/v1/discounts/validate/:
+    post:
+      operationId: v1_discounts_validate_create
+      description: Validate a discount code without applying it.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscountValidate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DiscountValidate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DiscountValidate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscountValidateResponse'
+          description: ''
+  /api/v1/discounts/vouchers/:
+    get:
+      operationId: v1_discounts_vouchers_list
+      description: List all currently valid vouchers for buyers.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Voucher'
+          description: ''
+  /api/v1/driver/earnings/:
+    get:
+      operationId: v1_driver_earnings_retrieve
+      description: Driver earnings summary.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEarnings'
+          description: ''
+  /api/v1/driver/history/:
+    get:
+      operationId: v1_driver_history_list
+      description: Driver's past completed jobs.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeliveryJob'
+          description: ''
+  /api/v1/driver/jobs/:
+    get:
+      operationId: v1_driver_jobs_list
+      description: List available delivery jobs (order status = Menunggu Pengirim).
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeliveryJob'
+          description: ''
+  /api/v1/driver/jobs/{id}/:
+    get:
+      operationId: v1_driver_jobs_retrieve
+      description: Get detail of a delivery job.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryJob'
+          description: ''
+  /api/v1/driver/jobs/{id}/complete/:
+    post:
+      operationId: v1_driver_jobs_complete_create
+      description: Driver marks job as completed → order Pesanan Selesai.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryJob'
+          description: ''
+  /api/v1/driver/jobs/{id}/take/:
+    post:
+      operationId: v1_driver_jobs_take_create
+      description: Driver takes an available job — atomic + select_for_update.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryJob'
+          description: ''
+  /api/v1/orders/:
+    get:
+      operationId: v1_orders_list
+      description: List the authenticated buyer's orders.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/orders/{id}/:
+    get:
+      operationId: v1_orders_retrieve
+      description: Retrieve a single order belonging to the authenticated buyer.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/products/:
+    get:
+      operationId: v1_products_list
+      description: List active products (public). Supports ?search= and ?store= filters.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductPublic'
+          description: ''
+  /api/v1/products/{id}/:
+    get:
+      operationId: v1_products_retrieve
+      description: Retrieve a single active product by ID (public).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPublic'
+          description: ''
+  /api/v1/products/seller/:
+    get:
+      operationId: v1_products_seller_list
+      description: List or create the seller's own products.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+    post:
+      operationId: v1_products_seller_create
+      description: List or create the seller's own products.
+      tags:
+      - v1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/v1/products/seller/{id}/:
+    get:
+      operationId: v1_products_seller_retrieve
+      description: Retrieve, update, or delete a seller's own product.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    patch:
+      operationId: v1_products_seller_partial_update
+      description: Retrieve, update, or delete a seller's own product.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    delete:
+      operationId: v1_products_seller_destroy
+      description: Retrieve, update, or delete a seller's own product.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/reviews/:
+    get:
+      operationId: v1_reviews_list
+      description: List all app reviews
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppReview'
+          description: ''
+  /api/v1/reviews/create/:
+    post:
+      operationId: v1_reviews_create_create
+      description: Submit a new app review
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AppReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AppReview'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppReview'
+          description: ''
+  /api/v1/seller/orders/:
+    get:
+      operationId: v1_seller_orders_list
+      description: List orders for the authenticated seller's store.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/seller/orders/{id}/:
+    get:
+      operationId: v1_seller_orders_retrieve
+      description: Retrieve a single order for the seller's store.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/seller/orders/{id}/process/:
+    post:
+      operationId: v1_seller_orders_process_create
+      description: 'Seller processes an order: Sedang Dikemas → Menunggu Pengirim.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/seller/reports/:
+    get:
+      operationId: v1_seller_reports_retrieve
+      description: Seller revenue summary — completed orders only.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SellerRevenueReport'
+          description: ''
+  /api/v1/stores/:
+    get:
+      operationId: v1_stores_list
+      description: List all stores (public).
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StorePublic'
+          description: ''
+  /api/v1/stores/{id}/:
+    get:
+      operationId: v1_stores_retrieve
+      description: Retrieve a single store by ID (public).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePublic'
+          description: ''
+  /api/v1/stores/me/:
+    get:
+      operationId: v1_stores_me_retrieve
+      description: Get, create, or update the authenticated seller's store.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+          description: ''
+    post:
+      operationId: v1_stores_me_create
+      description: Get, create, or update the authenticated seller's store.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Store'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Store'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Store'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+          description: ''
+    patch:
+      operationId: v1_stores_me_partial_update
+      description: Get, create, or update the authenticated seller's store.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStore'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStore'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStore'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+          description: ''
+  /api/v1/wallet/:
+    get:
+      operationId: v1_wallet_retrieve
+      description: Get buyer's wallet balance and transaction history.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+  /api/v1/wallet/topup/:
+    post:
+      operationId: v1_wallet_topup_create
+      description: 'Dummy top-up: add funds to the buyer''s wallet.'
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUp'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TopUp'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TopUp'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+components:
+  schemas:
+    AddToCart:
+      type: object
+      properties:
+        product_id:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+      required:
+      - product_id
+      - quantity
+    AdminSimulateNextDayResponse:
+      type: object
+      properties:
+        processed_count:
+          type: integer
+        processed_order_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - processed_count
+      - processed_order_ids
+    AdminStats:
+      type: object
+      properties:
+        users:
+          type: integer
+        stores:
+          type: integer
+        products:
+          type: integer
+        orders:
+          type: integer
+        delivery_jobs:
+          type: integer
+        vouchers:
+          type: integer
+        promos:
+          type: integer
+      required:
+      - delivery_jobs
+      - orders
+      - products
+      - promos
+      - stores
+      - users
+      - vouchers
+    AppReview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        reviewer_name:
+          type: string
+          maxLength: 100
+        rating:
+          type: integer
+          maximum: 5
+          minimum: 1
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - comment
+      - created_at
+      - id
+      - rating
+      - reviewer_name
+    BuyerSpendingReport:
+      type: object
+      properties:
+        order_count:
+          type: integer
+        total_spent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        total_discount_saved:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        total_ppn_paid:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        total_delivery_paid:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+      required:
+      - order_count
+      - orders
+      - total_delivery_paid
+      - total_discount_saved
+      - total_ppn_paid
+      - total_spent
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        store_id:
+          type: string
+          format: uuid
+          readOnly: true
+        store_name:
+          type: string
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+          readOnly: true
+        item_count:
+          type: integer
+          readOnly: true
+        subtotal:
+          type: number
+          format: double
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - item_count
+      - items
+      - store_id
+      - store_name
+      - subtotal
+      - updated_at
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          allOf:
+          - $ref: '#/components/schemas/ProductPublic'
+          readOnly: true
+        product_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        subtotal:
+          type: number
+          format: double
+          readOnly: true
+      required:
+      - id
+      - product
+      - product_id
+      - subtotal
+    Checkout:
+      type: object
+      properties:
+        address_id:
+          type: string
+          format: uuid
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethodEnum'
+        discount_code:
+          type: string
+          default: ''
+      required:
+      - address_id
+      - delivery_method
+    CheckoutPreview:
+      type: object
+      properties:
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethodEnum'
+        discount_code:
+          type: string
+          default: ''
+      required:
+      - delivery_method
+    CheckoutPreviewResponse:
+      type: object
+      properties:
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        delivery_fee:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        ppn_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - delivery_fee
+      - discount_amount
+      - ppn_amount
+      - subtotal
+      - total
+    CustomTokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    DeliveryAddress:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type: string
+          maxLength: 50
+        recipient_name:
+          type: string
+          maxLength: 100
+        phone:
+          type: string
+          maxLength: 20
+        street:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        province:
+          type: string
+          maxLength: 100
+        postal_code:
+          type: string
+          maxLength: 10
+        is_default:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - city
+      - created_at
+      - id
+      - label
+      - phone
+      - postal_code
+      - province
+      - recipient_name
+      - street
+    DeliveryJob:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        order:
+          allOf:
+          - $ref: '#/components/schemas/Order'
+          readOnly: true
+        driver_username:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/DeliveryJobStatusEnum'
+        taken_at:
+          type: string
+          format: date-time
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        driver_earnings:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - driver_username
+      - id
+      - order
+    DeliveryJobStatusEnum:
+      enum:
+      - available
+      - taken
+      - completed
+      type: string
+      description: |-
+        * `available` - Available
+        * `taken` - Taken
+        * `completed` - Completed
+    DeliveryMethodEnum:
+      enum:
+      - instant
+      - next_day
+      - regular
+      type: string
+      description: |-
+        * `instant` - Instant
+        * `next_day` - Next Day
+        * `regular` - Regular
+    DiscountTypeEnum:
+      enum:
+      - percentage
+      - fixed
+      type: string
+      description: |-
+        * `percentage` - Percentage
+        * `fixed` - Fixed
+    DiscountValidate:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 50
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+          default: '0.00'
+      required:
+      - code
+    DiscountValidateResponse:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+          format: uuid
+        discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        code:
+          type: string
+      required:
+      - code
+      - discount_amount
+      - id
+      - type
+    DriverEarnings:
+      type: object
+      properties:
+        total_jobs:
+          type: integer
+        completed_jobs:
+          type: integer
+        total_earnings:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - completed_jobs
+      - total_earnings
+      - total_jobs
+    Logout:
+      type: object
+      properties:
+        refresh:
+          type: string
+      required:
+      - refresh
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_username:
+          type: string
+          readOnly: true
+        store_name:
+          type: string
+          readOnly: true
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethodEnum'
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        delivery_fee:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        ppn_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        discount_code:
+          type: string
+          maxLength: 50
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+        status_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderStatusHistory'
+          readOnly: true
+      required:
+      - buyer_username
+      - created_at
+      - delivery_fee
+      - delivery_method
+      - id
+      - items
+      - ppn_amount
+      - status_history
+      - store_name
+      - subtotal
+      - total
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        product_name:
+          type: string
+          maxLength: 200
+        product_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - id
+      - product_id
+      - product_name
+      - product_price
+      - quantity
+      - subtotal
+    OrderStatusEnum:
+      enum:
+      - Sedang Dikemas
+      - Menunggu Pengirim
+      - Sedang Dikirim
+      - Pesanan Selesai
+      - Dikembalikan
+      type: string
+      description: |-
+        * `Sedang Dikemas` - Sedang Dikemas
+        * `Menunggu Pengirim` - Menunggu Pengirim
+        * `Sedang Dikirim` - Sedang Dikirim
+        * `Pesanan Selesai` - Pesanan Selesai
+        * `Dikembalikan` - Dikembalikan
+    OrderStatusHistory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          type: string
+          maxLength: 30
+        actor_username:
+          type: string
+          readOnly: true
+        note:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - actor_username
+      - created_at
+      - id
+      - status
+    PatchedDeliveryAddress:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type: string
+          maxLength: 50
+        recipient_name:
+          type: string
+          maxLength: 100
+        phone:
+          type: string
+          maxLength: 20
+        street:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        province:
+          type: string
+          maxLength: 100
+        postal_code:
+          type: string
+          maxLength: 10
+        is_default:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        store:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedStore:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+        description:
+          type: string
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 200
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUpdateCartItem:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        store:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - price
+      - store
+      - updated_at
+    ProductPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        store_id:
+          type: string
+          format: uuid
+          readOnly: true
+        store_name:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        image:
+          type: string
+          format: uri
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - price
+      - store_id
+      - store_name
+    Promo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 50
+        discount_type:
+          $ref: '#/components/schemas/DiscountTypeEnum'
+        discount_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        expiry_date:
+          type: string
+          format: date
+        is_active:
+          type: boolean
+        is_valid_now:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created_at
+      - discount_type
+      - discount_value
+      - expiry_date
+      - id
+      - is_valid_now
+    PromoCreate:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 50
+        discount_type:
+          $ref: '#/components/schemas/DiscountTypeEnum'
+        discount_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        expiry_date:
+          type: string
+          format: date
+        is_active:
+          type: boolean
+      required:
+      - code
+      - discount_type
+      - discount_value
+      - expiry_date
+    Register:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        phone:
+          type: string
+          maxLength: 20
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleEnum'
+      required:
+      - password
+      - roles
+      - username
+    RoleEnum:
+      enum:
+      - admin
+      - seller
+      - buyer
+      - driver
+      type: string
+      description: |-
+        * `admin` - Admin
+        * `seller` - Seller
+        * `buyer` - Buyer
+        * `driver` - Driver
+    RoleSwitch:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - role
+    RoleSwitchResponse:
+      type: object
+      properties:
+        refresh:
+          type: string
+        access:
+          type: string
+        active_role:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+      required:
+      - access
+      - active_role
+      - refresh
+      - roles
+    SellerRevenueReport:
+      type: object
+      properties:
+        order_count:
+          type: integer
+        completed_order_count:
+          type: integer
+        total_revenue:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        total_discount_given:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+      required:
+      - completed_order_count
+      - order_count
+      - orders
+      - total_discount_given
+      - total_revenue
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+        description:
+          type: string
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 200
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - updated_at
+    StorePublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+        description:
+          type: string
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 200
+        seller_username:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - seller_username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TopUp:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - amount
+    TransactionTypeEnum:
+      enum:
+      - topup
+      - debit
+      - refund
+      - reversal
+      type: string
+      description: |-
+        * `topup` - Top Up
+        * `debit` - Debit
+        * `refund` - Refund
+        * `reversal` - Reversal
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        phone:
+          type: string
+          maxLength: 20
+        roles:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+      required:
+      - id
+      - roles
+      - username
+    Voucher:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 50
+        discount_type:
+          $ref: '#/components/schemas/DiscountTypeEnum'
+        discount_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        expiry_date:
+          type: string
+          format: date
+        max_uses:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        uses_count:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        is_valid_now:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created_at
+      - discount_type
+      - discount_value
+      - expiry_date
+      - id
+      - is_valid_now
+      - max_uses
+    VoucherCreate:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 50
+        discount_type:
+          $ref: '#/components/schemas/DiscountTypeEnum'
+        discount_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        expiry_date:
+          type: string
+          format: date
+        max_uses:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - code
+      - discount_type
+      - discount_value
+      - expiry_date
+      - max_uses
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletTransaction'
+          readOnly: true
+      required:
+      - id
+      - transactions
+      - updated_at
+    WalletTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        transaction_type:
+          $ref: '#/components/schemas/TransactionTypeEnum'
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        description:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - amount
+      - created_at
+      - id
+      - transaction_type
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
