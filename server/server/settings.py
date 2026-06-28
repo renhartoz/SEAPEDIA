@@ -12,7 +12,7 @@ env = environ.Env()
 environ.Env.read_env()
 
 SECRET_KEY = env("SECRET_KEY")
-DEBUG = env("DEBUG")
+DEBUG = bool(env("DEBUG") == "True")
 ALLOWED_HOSTS = [
     host.strip()
     for host in env('ALLOWED_HOSTS').split(',')
