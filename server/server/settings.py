@@ -1,6 +1,10 @@
+import dj_database_url
+import os
 from pathlib import Path
 from datetime import timedelta
-import os, environ
+
+import dj_database_url
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -73,7 +77,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "server.wsgi.application"
 
 DATABASES = {
-    "default": env.db("DATABASE_URL")
+    "default": dj_database_url.parse(env("DATABASE_URL"))
 }
 
 AUTH_USER_MODEL = "accounts.User"
@@ -91,8 +95,14 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -162,11 +172,4 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": CLOUDINARY_API_SECRET,
 }
 
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
