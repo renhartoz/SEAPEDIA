@@ -24,22 +24,23 @@ const FEATURES = [
   { icon: Package, title: 'Easy Management', desc: 'Sellers manage inventory in real time.' },
 ]
 
-const DUMMY_PRODUCTS = [
-  { id: 1, name: 'Premium Wireless Headphones', price: 450000, store: 'TechHub Store', image: '🎧' },
-  { id: 2, name: 'Ergonomic Office Chair', price: 1200000, store: 'FurniMax', image: '🪑' },
-  { id: 3, name: 'Mechanical Keyboard', price: 850000, store: 'TechHub Store', image: '⌨️' },
-  { id: 4, name: 'Bamboo Desk Organizer', price: 180000, store: 'EcoLiving', image: '🎋' },
-  { id: 5, name: 'Running Shoes Pro', price: 650000, store: 'SportKing', image: '👟' },
-  { id: 6, name: 'Cold Brew Coffee Kit', price: 320000, store: 'CafeCraft', image: '☕' },
-]
+import { catalogService } from '../../services/catalogService'
 
 export function HomePage() {
   const [reviews, setReviews] = useState([])
+  const [products, setProducts] = useState([])
 
   useEffect(() => {
     reviewService
       .list({ page_size: 6 })
       .then(({ data }) => setReviews(data.results || []))
+      .catch(() => {})
+      
+    catalogService
+      .getProducts()
+      .then(({ data }) => {
+        setProducts(data.slice(0, 6))
+      })
       .catch(() => {})
   }, [])
 
@@ -121,17 +122,24 @@ export function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {DUMMY_PRODUCTS.map((product) => (
+            {products.length === 0 && (
+              <p className="text-sm text-(--color-text-muted) italic col-span-full">No products found.</p>
+            )}
+            {products.map((product) => (
               <Link key={product.id} to={`/products/${product.id}`} id={`product-${product.id}`}>
                 <Card className="border-(--color-border) hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden">
                   <div className="h-44 bg-gradient-to-br from-brand-50 to-sea-50 flex items-center justify-center text-6xl">
-                    {product.image}
+                    {product.image ? (
+                      <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <Package className="w-16 h-16 text-brand-300" />
+                    )}
                   </div>
                   <CardContent className="pt-4 pb-5">
-                    <p className="text-xs text-(--color-text-muted) mb-1">{product.store}</p>
+                    <p className="text-xs text-(--color-text-muted) mb-1">{product.store_name}</p>
                     <h3 className="font-semibold text-sm mb-2 leading-snug">{product.name}</h3>
                     <p className="font-bold text-brand-600">
-                      Rp {product.price.toLocaleString('id-ID')}
+                      Rp {Number(product.price).toLocaleString('id-ID')}
                     </p>
                   </CardContent>
                 </Card>
